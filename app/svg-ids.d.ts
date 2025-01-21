@@ -1,0 +1,1 @@
+export type SvgIds = "chevron-up" | "chevron-down" | "WAS" | "UTA" | "TOR" | "SAS" | "SAC" | "POR" | "PHO" | "PHI" | "ORL" | "OKC" | "NYK" | "NOP" | "NJN" | "MIN" | "MIL" | "MIA" | "MEM" | "LAL" | "LAC" | "IND" | "HOU" | "GSW" | "DET" | "DEN" | "DAL" | "CLE" | "CHO" | "CHI" | "BOS" | "ATL";
