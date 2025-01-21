@@ -36,15 +36,6 @@ function Footer() {
         save any information and stores your prediction in your browser. If you
         clear your local storage you will lose all your estimates!
       </p>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height={100}
-        width={100}
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 100 100"
-      >
-        <use href="sprite.svg#BOS" />
-      </svg>
       <a
         className="flex items-center gap-1 hover:underline hover:underline-offset-4"
         href="https://www.reddit.com/r/nba//"
@@ -88,7 +79,7 @@ export default async function Home() {
   const wins = nbaTeams.reduce((acc, team) => acc + team.wins, 0);
 
   return (
-    <div className="grid items-center justify-items-center min-h-screen p-8 pb-20 gap-16 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid items-center justify-items-center min-h-screen p-6 pb-20 gap-16 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-6 items-center sm:items-start">
         <h1 className="text-3xl font-bold">Guess the 2025 NBA Standings </h1>
         <NBATeamsTable nbaTeams={nbaTeams} />
