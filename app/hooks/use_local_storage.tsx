@@ -17,12 +17,12 @@ export function useLocalStorage<T>(
     }
   }, []);
 
+  // Probably a better way to do type checking
   function isString(value: any): value is string {
     return typeof value === "string";
   }
 
   function setItem(value: T) {
-    debugger;
     const stringifiedValue = isString(value) ? value : JSON.stringify(value);
 
     setItemState(value);
