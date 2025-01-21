@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { NBATeam } from "./types";
 import { GAMES_IN_SEASON, TOTAL_GAMES } from "./constants";
 import { SortDirection, SortIcon, SVGIcon } from "./svg_icon";
+import { useLocalStorage } from "./hooks/use_local_storage";
 
 interface NBATeamTableRowProps {
   team: NBATeam;
@@ -175,35 +176,24 @@ function ConferenceTable({
 }
 
 export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
-  const [estimatedWins, setEstimatedWins] = useState<Record<string, number>>(
-    {}
+  const [_updateTime, setUpdateTime] = useLocalStorage<string>(
+    "update_time",
+    ""
   );
-  useEffect(() => {
-    function useCurrentWinsAsDefault(): Record<string, number> {
-      return nbaTeams.reduce((acc: Record<string, number>, nbaTeam) => {
-        acc[nbaTeam.name] = nbaTeam.wins;
-        return acc;
-      }, {});
-    }
 
-    const wins = window.localStorage.getItem("wins");
-    if (wins === null) {
-      return setEstimatedWins(useCurrentWinsAsDefault());
-    }
-    try {
-      return setEstimatedWins(JSON.parse(wins));
-    } catch (error) {
-      return setEstimatedWins(useCurrentWinsAsDefault());
-    }
-  }, []);
+  function useCurrentWinsAsDefault(): Record<string, number> {
+    return nbaTeams.reduce((acc: Record<string, number>, nbaTeam) => {
+      acc[nbaTeam.name] = nbaTeam.wins;
+      return acc;
+    }, {});
+  }
+  const [estimatedWins, setEstimatedWins] = useLocalStorage<
+    Record<string, number>
+  >("estimates", useCurrentWinsAsDefault());
 
   useEffect(() => {
     if (Object.keys(estimatedWins).length > 0) {
-      window.localStorage.setItem("wins", JSON.stringify(estimatedWins));
-      window.localStorage.setItem(
-        "local_update_time",
-        new Date().toISOString()
-      );
+      setUpdateTime(new Date().toISOString());
     }
   }, [JSON.stringify(estimatedWins)]);
 
@@ -211,7 +201,8 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
     (acc, win) => acc + win,
     0
   );
-  if (JSON.stringify(estimatedWins) === "{}") {
+
+  if (Object.keys(estimatedWins).length === 0) {
     return null;
   }
   return (
