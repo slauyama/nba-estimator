@@ -16,6 +16,10 @@ function NBATeamTableRow({
   estimatedWins,
   setEstimatedWins,
 }: NBATeamTableRowProps) {
+  function cleanNumber(number: number) {
+    return number.toString();
+  }
+
   return (
     <tr className="text-sm border-b border-gray-800 bg-gray-900 hover:bg-gray-800">
       <th
@@ -39,16 +43,18 @@ function NBATeamTableRow({
       <td className="px-4 py-2 text-center">
         {team.wins} - {team.losses}
       </td>
-      <td className="px-4 py-2 flex-1 gap-2 justify-center">
+      <td className="px-4 py-2 flex gap-2 justify-center">
         <input
           type="number"
-          className="rounded max-w-[35px] [appearance:textfield] border-x-0  text-center  text-sm  block bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-900 focus:border-blue-900"
+          className="rounded max-w-[35px] [appearance:textfield] border-x-0  text-center  text-sm  block bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-900 focus:border-blue-900 out-of-range:text-red-800  out-of-range:bg-red-300"
           placeholder="0"
-          value={estimatedWins}
+          value={cleanNumber(estimatedWins)}
           onChange={(event) => {
-            setEstimatedWins(Number(event.target.value));
+            setEstimatedWins(
+              Math.max(0, Math.min(Number(event.target.value), 82))
+            );
           }}
-          max={GAMES_IN_SEASON}
+          max={GAMES_IN_SEASON - team.losses}
           min={team.wins}
         />{" "}
         <span> - {GAMES_IN_SEASON - estimatedWins}</span>

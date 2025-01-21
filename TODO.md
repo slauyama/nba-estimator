@@ -47,7 +47,6 @@ After we will need access to a node server that can also talk to some hosted DB.
 - Add save button
   - Save should be the only way to update local storate
   - Save button should open dialog to warning user what will happen
-- Fix svg sprites
 - Host
 - Capture storage event changes to avoid changing data
 - Reddit Oauth
@@ -68,3 +67,5 @@ After we will need access to a node server that can also talk to some hosted DB.
 ### Done
 
 - Create Image Sprite for speed optimization
+- Fix svg sprites
+- Add validation on input to render outline of Validity State
