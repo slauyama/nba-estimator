@@ -2,9 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { NBATeam } from "./types";
-import { GAMES_IN_SEASON, TOTAL_GAMES } from "./constants";
+import {
+  GAMES_IN_SEASON,
+  MAX_CONFERENCE_WINS,
+  MIN_CONFERENCE_WINS,
+  TOTAL_GAMES,
+} from "./constants";
 import { SortDirection, SortIcon, SVGIcon } from "./svg_icon";
 import { useLocalStorage } from "./hooks/use_local_storage";
+import { pluralize } from "./helper/pluralize";
+import { error } from "console";
 
 interface NBATeamTableRowProps {
   team: NBATeam;
@@ -171,8 +178,8 @@ function ConferenceTable({
           <tr className="text-sm border-b last-of-type:border-none border-gray-800 bg-gray-900 hover:bg-gray-800">
             <td />
             <td />
-            <td className="px-4 py-2">
-              {totalWins} - {totalLosses}
+            <td className="px-4 py-2 text-center font-bold">
+              Total: {totalWins} - {totalLosses}
             </td>
           </tr>
         </tbody>
@@ -181,12 +188,92 @@ function ConferenceTable({
   );
 }
 
-export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
-  const [_updateTime, setUpdateTime] = useLocalStorage<string>(
+interface SaveSectionProps {
+  estimatedWins: Record<string, number>;
+  nbaTeams: NBATeam[];
+}
+function SaveSection({ estimatedWins, nbaTeams }: SaveSectionProps) {
+  const [updateTime, setUpdateTime] = useLocalStorage<string>(
     "update_time",
     ""
   );
 
+  const totalEstimateWins = Object.values(estimatedWins).reduce(
+    (acc, win) => acc + win,
+    0
+  );
+  const totalGamesDifference = Math.abs(TOTAL_GAMES - totalEstimateWins);
+
+  const easternEstimatedWins = nbaTeams.reduce(
+    (acc, nbaTeam) =>
+      nbaTeam.conference === "eastern"
+        ? acc + estimatedWins[nbaTeam.name]
+        : acc,
+    0
+  );
+
+  const westernEstimatedWins = nbaTeams.reduce(
+    (acc, nbaTeam) =>
+      nbaTeam.conference === "western"
+        ? acc + estimatedWins[nbaTeam.name]
+        : acc,
+    0
+  );
+
+  function getErrorMessage() {
+    if (totalEstimateWins !== TOTAL_GAMES) {
+      return `NBA standings are invalid. ${
+        totalEstimateWins < TOTAL_GAMES ? "Add" : "Remove"
+      } ${pluralize(totalGamesDifference, "win")}`;
+    } else if (easternEstimatedWins > MAX_CONFERENCE_WINS) {
+      return `Eastern Conference standings are invalid. Remove ${pluralize(
+        easternEstimatedWins - MAX_CONFERENCE_WINS,
+        "win"
+      )}.`;
+    } else if (easternEstimatedWins < MIN_CONFERENCE_WINS) {
+      return `Eastern Conference standings are invalid. Add ${pluralize(
+        MIN_CONFERENCE_WINS - easternEstimatedWins,
+        "win"
+      )}.`;
+    } else if (westernEstimatedWins > MAX_CONFERENCE_WINS) {
+      return `Eastern Conference standings are invalid. Remove ${pluralize(
+        westernEstimatedWins - MAX_CONFERENCE_WINS,
+        "win"
+      )}.`;
+    } else if (westernEstimatedWins < MIN_CONFERENCE_WINS) {
+      return `Eastern Conference standings are invalid. Add ${pluralize(
+        MIN_CONFERENCE_WINS - westernEstimatedWins,
+        "win"
+      )}.`;
+    } else {
+      return null;
+    }
+  }
+
+  const errrorMessage = getErrorMessage();
+
+  function handleClick() {
+    // TODO
+  }
+
+  return (
+    <section className="mt-4 flex justify-between">
+      <p className="self-center font-semibold">
+        {errrorMessage ?? "NBA standings are valid"}
+      </p>
+      <button
+        type="button"
+        className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-slate-500 "
+        disabled={errrorMessage !== null}
+        onClick={handleClick}
+      >
+        Save
+      </button>
+    </section>
+  );
+}
+
+export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
   function useCurrentWinsAsDefault(): Record<string, number> {
     return nbaTeams.reduce((acc: Record<string, number>, nbaTeam) => {
       acc[nbaTeam.name] = nbaTeam.wins;
@@ -196,17 +283,6 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
   const [estimatedWins, setEstimatedWins] = useLocalStorage<
     Record<string, number>
   >("estimates", useCurrentWinsAsDefault());
-
-  useEffect(() => {
-    if (Object.keys(estimatedWins).length > 0) {
-      setUpdateTime(new Date().toISOString());
-    }
-  }, [JSON.stringify(estimatedWins)]);
-
-  const totalEstimateWins = Object.values(estimatedWins).reduce(
-    (acc, win) => acc + win,
-    0
-  );
 
   if (Object.keys(estimatedWins).length === 0) {
     return null;
@@ -229,16 +305,8 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
           setEstimatedWins={setEstimatedWins}
         />
       </div>
-      <div className="mt-4">
-        {totalEstimateWins !== TOTAL_GAMES && (
-          <p className="self-center font-semibold">
-            Your NBA Standings are invalid. Please{" "}
-            {totalEstimateWins < TOTAL_GAMES ? "add" : "remove"}{" "}
-            {Math.abs(TOTAL_GAMES - totalEstimateWins)}{" "}
-            {Math.abs(TOTAL_GAMES - totalEstimateWins) === 1 ? "win" : "wins"}.
-          </p>
-        )}
-      </div>
+
+      <SaveSection estimatedWins={estimatedWins} nbaTeams={nbaTeams} />
     </div>
   );
 }

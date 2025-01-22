@@ -43,7 +43,7 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ## To Do
 
-- Add save date to localStorage
+- Add number of current wins localStorage
 - Add save button
   - Save should be the only way to update local storate
   - Save button should open dialog to warning user what will happen
@@ -54,10 +54,6 @@ After we will need access to a node server that can also talk to some hosted DB.
 - Need to run a cron job to get updated data daily
 - Need to host DB online
 - Add renderable scoring system
-- Need to determine validation for season estimate
-  - Based on number of games in East in West we dont want estimates that have only the East winning games
-  - 30 games in opposite conference, 52 games in same conference
-  - minimum 780 wins in one conference 52 \* 15
 - Tests?
 
 ### Long Tail
@@ -69,3 +65,9 @@ After we will need access to a node server that can also talk to some hosted DB.
 - Create Image Sprite for speed optimization
 - Fix svg sprites
 - Add validation on input to render outline of Validity State
+- Add save date to localStorage
+- Need to determine validation for season estimate
+  - Based on number of games in East in West we dont want estimates that have only the East winning games
+  - 30 games in opposite conference, 52 games in same conference
+  - 390 minimum wins or losses 52 \* 15 / 2
+  - 840 maximum wins 52 \* 15 / 2 + 30 \* 15
