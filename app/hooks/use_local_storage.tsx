@@ -13,7 +13,9 @@ export function useLocalStorage<T>(
       try {
         const parsedData = JSON.parse(rawData) as T;
         setItem(parsedData);
-      } catch (error) {}
+      } catch (error) {
+        setItem(rawData as T);
+      }
     }
   }, []);
 
