@@ -54,6 +54,7 @@ After we will need access to a node server that can also talk to some hosted DB.
 - Need to run a cron job to get updated data daily
 - Need to host DB online
 - Add renderable scoring system
+- Export import system
 - Tests?
 
 ### Long Tail
