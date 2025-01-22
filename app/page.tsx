@@ -1,4 +1,3 @@
-import type { InferGetStaticPropsType, GetStaticProps } from "next";
 import Image from "next/image";
 import connectionPool from "./db";
 import { NBATeamsTable } from "./nba_table";
