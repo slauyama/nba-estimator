@@ -31,8 +31,8 @@ export type BasketballReferenceTeamShortCode =
   | "ATL";
 
 export enum Conference {
-  Eastern = "EASTERN",
-  Western = "WESTERN",
+  Eastern = "eastern",
+  Western = "western",
 }
 
 export interface NBATeam {
