@@ -43,7 +43,7 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ## To Do
 
-- Add number of current wins localStorage
+- Save number of current wins to localStorage
 - Add save button
   - Save should be the only way to update local storate
   - Save button should open dialog to warning user what will happen
