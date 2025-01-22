@@ -2,7 +2,7 @@ import type { InferGetStaticPropsType, GetStaticProps } from "next";
 import Image from "next/image";
 import connectionPool from "./db";
 import { NBATeamsTable } from "./nba_table";
-import { NBATeam } from "./types";
+import { NBATeam } from "./types/nba";
 import { TOTAL_GAMES } from "./constants";
 
 function NBASeasonProgressBar({ totalWins }: { totalWins: number }) {
@@ -32,9 +32,10 @@ function Footer() {
       <p>
         Put your NBA knowledge to the test. Instead of arguing online how X team
         is overrated or underated, make your season prediction now! Check back
-        in at the end of the seaon and see how you did. This website does not
-        save any information and stores your prediction in your browser. If you
-        clear your local storage you will lose all your estimates!
+        in at the end of the seaon and see how you did. Privacy policy This
+        website does not save any information and stores your prediction in your
+        browser. If you clear your local storage you will lose all your
+        estimates!
       </p>
       <a
         className="flex items-center gap-1 hover:underline hover:underline-offset-4"

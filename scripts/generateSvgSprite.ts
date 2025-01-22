@@ -20,7 +20,6 @@ svgFiles.forEach((file) => {
 
   symbolElement?.setAttribute("id", fileName);
 
-  console.log(svgElement?.attributes?.viewBox);
   if (svgElement?.attributes.viewBox) {
     symbolElement?.setAttribute("viewBox", svgElement?.attributes.viewBox);
   }
@@ -36,4 +35,4 @@ fs.writeFileSync("public/sprite.svg", svgSprite);
 const svgTypes = `export type SvgIds = ${ids
   .map((id) => `"${id}"`)
   .join(" | ")};`;
-fs.writeFileSync("app/svg-ids.d.ts", svgTypes);
+fs.writeFileSync("app/types/svg.ts", svgTypes);

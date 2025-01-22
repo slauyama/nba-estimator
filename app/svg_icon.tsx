@@ -1,5 +1,6 @@
 import { SVGProps } from "react";
-import { SvgIds } from "./svg-ids.d";
+import { SvgIds } from "./types/svg";
+import { SortDirection } from "./types/sort";
 
 export function SVGIcon({
   id,
@@ -12,7 +13,6 @@ export function SVGIcon({
   );
 }
 
-export type SortDirection = "ASC" | "DESC";
 interface SortIconProps {
   sortDirection: SortDirection;
   renderCondition: boolean;
