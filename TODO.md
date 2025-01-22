@@ -68,6 +68,3 @@ After we will need access to a node server that can also talk to some hosted DB.
 - Add save date to localStorage
 - Need to determine validation for season estimate
   - Based on number of games in East in West we dont want estimates that have only the East winning games
-  - 30 games in opposite conference, 52 games in same conference
-  - 390 minimum wins or losses 52 \* 15 / 2
-  - 840 maximum wins 52 \* 15 / 2 + 30 \* 15
