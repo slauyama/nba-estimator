@@ -6,5 +6,5 @@ export enum SortDirection {
 export enum SortType {
   Name = "NAME",
   CurrentRecord = "CURRENT_RECORD",
-  EstimatedRecords = "ESTIMATED_RECORD",
+  EstimatedRecord = "ESTIMATED_RECORD",
 }

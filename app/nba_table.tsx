@@ -17,6 +17,9 @@ import { pluralize } from "./helper/pluralize";
 import { SortDirection, SortType } from "./types/sort";
 import { NBATeamTableRow } from "./nba_table_row";
 
+const { Asc, Desc } = SortDirection;
+const { Name, CurrentRecord, EstimatedRecord } = SortType;
+
 function ConferenceTable({
   nbaTeams,
   estimatedWins,
@@ -26,45 +29,33 @@ function ConferenceTable({
   estimatedWins: TeamWinsMap;
   setEstimatedWins: (estimatedWins: TeamWinsMap) => void;
 }) {
-  const [sortType, setSortType] = useState<SortType>(SortType.CurrentRecord);
-  const [sortDirection, setSortDirection] = useState<SortDirection>(
-    SortDirection.Desc
-  );
+  const [sortType, setSortType] = useState<SortType>(CurrentRecord);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(Desc);
 
   nbaTeams.sort((a, b) => {
     let difference;
-    if (sortType === SortType.CurrentRecord) {
+    if (sortType === CurrentRecord) {
       difference = a.wins - b.wins;
-    } else if (sortType === SortType.EstimatedRecords) {
+    } else if (sortType === EstimatedRecord) {
       difference =
         estimatedWins[a.basketball_reference_team_shortcode] -
         estimatedWins[b.basketball_reference_team_shortcode];
     } else {
       if (a.name === b.name) {
         difference = 0;
-      } else if (a.name > b.name) {
-        difference = 1;
       } else {
-        difference = -1;
+        difference = a.name > b.name ? 1 : -1;
       }
     }
-    return sortDirection === SortDirection.Asc ? difference : -difference;
+    return sortDirection === Asc ? difference : -difference;
   });
 
-  function sortTable(sortTypeClicked: SortType) {
+  function handleClickTableHeader(sortTypeClicked: SortType) {
     if (sortTypeClicked === sortType) {
-      setSortDirection(
-        sortDirection === SortDirection.Asc
-          ? SortDirection.Desc
-          : SortDirection.Asc
-      );
+      setSortDirection(sortDirection === Asc ? Desc : Asc);
     } else {
       setSortType(sortTypeClicked);
-      setSortDirection(
-        sortTypeClicked === SortType.Name
-          ? SortDirection.Asc
-          : SortDirection.Desc
-      );
+      setSortDirection(sortTypeClicked === Name ? Asc : Desc);
     }
   }
 
@@ -76,34 +67,34 @@ function ConferenceTable({
             <th
               scope="col"
               className="px-6 py-2 hover:bg-gray-700"
-              onClick={() => sortTable(SortType.Name)}
+              onClick={() => handleClickTableHeader(Name)}
             >
               <p className="inline-block">Team</p>
               <SortIcon
                 sortDirection={sortDirection}
-                renderCondition={sortType === "NAME"}
+                renderCondition={sortType === Name}
               />
             </th>
             <th
               scope="col"
               className="px-6 py-2 hover:bg-gray-700"
-              onClick={() => sortTable(SortType.CurrentRecord)}
+              onClick={() => handleClickTableHeader(CurrentRecord)}
             >
               <p className="inline-block">Current Record</p>
               <SortIcon
                 sortDirection={sortDirection}
-                renderCondition={sortType === "CURRENT_RECORD"}
+                renderCondition={sortType === CurrentRecord}
               />
             </th>
             <th
               scope="col"
               className="px-6 py-2 hover:bg-gray-700"
-              onClick={() => sortTable(SortType.EstimatedRecords)}
+              onClick={() => handleClickTableHeader(EstimatedRecord)}
             >
               <p className="inline-block">Estimated Record</p>
               <SortIcon
                 sortDirection={sortDirection}
-                renderCondition={sortType === "ESTIMATED_RECORD"}
+                renderCondition={sortType === EstimatedRecord}
               />
             </th>
           </tr>
