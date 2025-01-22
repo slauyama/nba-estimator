@@ -44,3 +44,5 @@ export interface NBATeam {
   conference: Conference;
   updated_at: string;
 }
+
+export type TeamWinsMap = Record<BasketballReferenceTeamShortCode, number>;
