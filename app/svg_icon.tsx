@@ -20,7 +20,7 @@ interface SortIconProps {
 export function SortIcon({ sortDirection, renderCondition }: SortIconProps) {
   return (
     <SVGIcon
-      id={sortDirection === "ASC" ? "chevron-down" : "chevron-up"}
+      id={sortDirection === SortDirection.Asc ? "chevron-down" : "chevron-up"}
       className={`ml-1 mb-1 inline-block ${
         renderCondition ? "visible" : "invisible"
       }`}
