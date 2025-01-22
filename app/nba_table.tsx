@@ -1,76 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { NBATeam } from "./types";
+import { useState } from "react";
 import {
-  GAMES_IN_SEASON,
+  BasketballReferenceTeamShortCode,
+  Conference,
+  NBATeam,
+} from "./types/nba";
+import {
   MAX_CONFERENCE_WINS,
   MIN_CONFERENCE_WINS,
   TOTAL_GAMES,
 } from "./constants";
-import { SortDirection, SortIcon, SVGIcon } from "./svg_icon";
+import { SortIcon } from "./svg_icon";
 import { useLocalStorage } from "./hooks/use_local_storage";
 import { pluralize } from "./helper/pluralize";
-import { error } from "console";
-
-interface NBATeamTableRowProps {
-  team: NBATeam;
-  estimatedWins: number;
-  setEstimatedWins: (wins: number) => void;
-}
-function NBATeamTableRow({
-  team,
-  estimatedWins,
-  setEstimatedWins,
-}: NBATeamTableRowProps) {
-  function cleanNumber(number: number) {
-    return number.toString();
-  }
-
-  return (
-    <tr className="text-sm border-b border-gray-800 bg-gray-900 hover:bg-gray-800">
-      <th
-        scope="row"
-        className="px-4 py-2 font-normal whitespace-nowrap text-white"
-      >
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href={`https://www.basketball-reference.com/teams/${team.basketball_reference_team_shortcode}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <SVGIcon
-            id={team.basketball_reference_team_shortcode}
-            height={20}
-            width={20}
-          />
-          {team.name}
-        </a>
-      </th>
-      <td className="px-4 py-2 text-center">
-        {team.wins} - {team.losses}
-      </td>
-      <td className="px-4 py-2 flex gap-2 justify-center">
-        <input
-          type="number"
-          className="rounded max-w-[35px] [appearance:textfield] border-x-0  text-center  text-sm  block bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-900 focus:border-blue-900 out-of-range:text-red-800  out-of-range:bg-red-300"
-          placeholder="0"
-          value={cleanNumber(estimatedWins)}
-          onChange={(event) => {
-            setEstimatedWins(
-              Math.max(0, Math.min(Number(event.target.value), 82))
-            );
-          }}
-          max={GAMES_IN_SEASON - team.losses}
-          min={team.wins}
-        />{" "}
-        <span> - {GAMES_IN_SEASON - estimatedWins}</span>
-      </td>
-    </tr>
-  );
-}
-
-type SortType = "NAME" | "CURRENT_RECORD" | "ESTIMATED_RECORD";
+import { SortDirection, SortType } from "./types/sort";
+import { NBATeamTableRow } from "./nba_table_row";
 
 function ConferenceTable({
   nbaTeams,
@@ -78,18 +23,22 @@ function ConferenceTable({
   setEstimatedWins,
 }: {
   nbaTeams: NBATeam[];
-  estimatedWins: Record<string, number>;
-  setEstimatedWins: (estimatedWins: Record<string, number>) => void;
+  estimatedWins: TeamWinsMap;
+  setEstimatedWins: (estimatedWins: TeamWinsMap) => void;
 }) {
-  const [sortType, setSortType] = useState<SortType>("ESTIMATED_RECORD");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("DESC");
+  const [sortType, setSortType] = useState<SortType>(SortType.CurrentRecord);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(
+    SortDirection.Desc
+  );
 
   nbaTeams.sort((a, b) => {
     let difference;
-    if (sortType === "CURRENT_RECORD") {
+    if (sortType === SortType.CurrentRecord) {
       difference = a.wins - b.wins;
-    } else if (sortType === "ESTIMATED_RECORD") {
-      difference = estimatedWins[a.name] - estimatedWins[b.name];
+    } else if (sortType === SortType.EstimatedRecords) {
+      difference =
+        estimatedWins[a.basketball_reference_team_shortcode] -
+        estimatedWins[b.basketball_reference_team_shortcode];
     } else {
       if (a.name === b.name) {
         difference = 0;
@@ -99,27 +48,25 @@ function ConferenceTable({
         difference = -1;
       }
     }
-    return sortDirection === "ASC" ? difference : -difference;
+    return sortDirection === SortDirection.Asc ? difference : -difference;
   });
 
   function sortTable(sortTypeClicked: SortType) {
     if (sortTypeClicked === sortType) {
-      setSortDirection(sortDirection === "ASC" ? "DESC" : "ASC");
+      setSortDirection(
+        sortDirection === SortDirection.Asc
+          ? SortDirection.Desc
+          : SortDirection.Asc
+      );
     } else {
       setSortType(sortTypeClicked);
-      setSortDirection(sortTypeClicked === "NAME" ? "ASC" : "DESC");
+      setSortDirection(
+        sortTypeClicked === SortType.Name
+          ? SortDirection.Asc
+          : SortDirection.Desc
+      );
     }
   }
-  const [totalWins, totalLosses] = nbaTeams.reduce(
-    (acc, nbaTeam) => {
-      const [wins, losses] = acc;
-      return [
-        wins + estimatedWins[nbaTeam.name],
-        losses + (82 - estimatedWins[nbaTeam.name]),
-      ];
-    },
-    [0, 0]
-  );
 
   return (
     <div className="relative overflow-auto rounded-lg">
@@ -129,7 +76,7 @@ function ConferenceTable({
             <th
               scope="col"
               className="px-6 py-2 hover:bg-gray-700"
-              onClick={() => sortTable("NAME")}
+              onClick={() => sortTable(SortType.Name)}
             >
               <p className="inline-block">Team</p>
               <SortIcon
@@ -140,7 +87,7 @@ function ConferenceTable({
             <th
               scope="col"
               className="px-6 py-2 hover:bg-gray-700"
-              onClick={() => sortTable("CURRENT_RECORD")}
+              onClick={() => sortTable(SortType.CurrentRecord)}
             >
               <p className="inline-block">Current Record</p>
               <SortIcon
@@ -151,7 +98,7 @@ function ConferenceTable({
             <th
               scope="col"
               className="px-6 py-2 hover:bg-gray-700"
-              onClick={() => sortTable("ESTIMATED_RECORD")}
+              onClick={() => sortTable(SortType.EstimatedRecords)}
             >
               <p className="inline-block">Estimated Record</p>
               <SortIcon
@@ -166,22 +113,17 @@ function ConferenceTable({
             <NBATeamTableRow
               key={nbaTeam.name}
               team={nbaTeam}
-              estimatedWins={estimatedWins[nbaTeam.name]}
+              estimatedWins={
+                estimatedWins[nbaTeam.basketball_reference_team_shortcode]
+              }
               setEstimatedWins={(estimatedWin) => {
                 setEstimatedWins({
                   ...estimatedWins,
-                  [nbaTeam.name]: estimatedWin,
+                  [nbaTeam.basketball_reference_team_shortcode]: estimatedWin,
                 });
               }}
             />
           ))}
-          <tr className="text-sm border-b last-of-type:border-none border-gray-800 bg-gray-900 hover:bg-gray-800">
-            <td />
-            <td />
-            <td className="px-4 py-2 text-center font-bold">
-              Total: {totalWins} - {totalLosses}
-            </td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -206,7 +148,7 @@ function SaveSection({ estimatedWins, nbaTeams }: SaveSectionProps) {
 
   const easternEstimatedWins = nbaTeams.reduce(
     (acc, nbaTeam) =>
-      nbaTeam.conference === "eastern"
+      nbaTeam.conference === Conference.Eastern
         ? acc + estimatedWins[nbaTeam.name]
         : acc,
     0
@@ -214,14 +156,21 @@ function SaveSection({ estimatedWins, nbaTeams }: SaveSectionProps) {
 
   const westernEstimatedWins = nbaTeams.reduce(
     (acc, nbaTeam) =>
-      nbaTeam.conference === "western"
+      nbaTeam.conference === Conference.Western
         ? acc + estimatedWins[nbaTeam.name]
         : acc,
     0
   );
 
-  function getErrorMessage() {
-    if (totalEstimateWins !== TOTAL_GAMES) {
+  function getMessage() {
+    // Check current estimates wins with saved estimated wins
+    if (JSON.stringify(estimatedWins) === JSON.stringify({})) {
+      const lastUpdateTime = `${new Date(
+        updateTime
+      ).toLocaleDateString()} ${new Date(updateTime).toLocaleTimeString()}`;
+
+      return `NBA standings are saved. Last Updated: ${lastUpdateTime}`;
+    } else if (totalEstimateWins !== TOTAL_GAMES) {
       return `NBA standings are invalid. ${
         totalEstimateWins < TOTAL_GAMES ? "Add" : "Remove"
       } ${pluralize(totalGamesDifference, "win")}`;
@@ -250,56 +199,57 @@ function SaveSection({ estimatedWins, nbaTeams }: SaveSectionProps) {
     }
   }
 
-  const errrorMessage = getErrorMessage();
+  const errrorMessage = getMessage();
 
   function handleClick() {
-    // TODO
+    setUpdateTime(new Date().toISOString());
   }
 
   return (
-    <section className="mt-4 flex justify-between">
-      <p className="self-center font-semibold">
-        {errrorMessage ?? "NBA standings are valid"}
-      </p>
+    <section className="mt-4 flex gap-4">
       <button
         type="button"
-        className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-slate-500 "
+        className="inline-flex rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-slate-500 "
         disabled={errrorMessage !== null}
         onClick={handleClick}
       >
         Save
       </button>
+      <p className="self-center font-semibold">{errrorMessage}</p>
     </section>
   );
 }
 
+type TeamWinsMap = Record<BasketballReferenceTeamShortCode, number>;
+
 export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
-  function useCurrentWinsAsDefault(): Record<string, number> {
-    return nbaTeams.reduce((acc: Record<string, number>, nbaTeam) => {
-      acc[nbaTeam.name] = nbaTeam.wins;
+  function useCurrentWinsAsDefault(): Partial<TeamWinsMap> {
+    return nbaTeams.reduce((acc: Partial<TeamWinsMap>, nbaTeam) => {
+      acc[nbaTeam.basketball_reference_team_shortcode] = nbaTeam.wins;
       return acc;
     }, {});
   }
-  const [estimatedWins, setEstimatedWins] = useLocalStorage<
-    Record<string, number>
-  >("estimates", useCurrentWinsAsDefault());
+  const [estimatedWins, setEstimatedWins] = useLocalStorage<TeamWinsMap>(
+    "estimates",
+    useCurrentWinsAsDefault() as TeamWinsMap
+  );
 
   if (Object.keys(estimatedWins).length === 0) {
     return null;
   }
   return (
     <div className="flex-col">
-      <div className="relative overflow-auto flex gap-2">
+      <div className="overflow-auto flex gap-2">
         <ConferenceTable
           nbaTeams={nbaTeams.filter(
-            (nbaTeam) => nbaTeam.conference === "eastern"
+            (nbaTeam) => nbaTeam.conference === Conference.Eastern
           )}
           estimatedWins={estimatedWins}
           setEstimatedWins={setEstimatedWins}
         />
         <ConferenceTable
           nbaTeams={nbaTeams.filter(
-            (nbaTeam) => nbaTeam.conference === "western"
+            (nbaTeam) => nbaTeam.conference === Conference.Western
           )}
           estimatedWins={estimatedWins}
           setEstimatedWins={setEstimatedWins}
