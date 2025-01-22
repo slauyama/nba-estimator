@@ -29,14 +29,6 @@ function NBASeasonProgressBar({ totalWins }: { totalWins: number }) {
 function Footer() {
   return (
     <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-      <p>
-        Put your NBA knowledge to the test. Instead of arguing online how X team
-        is overrated or underated, make your season prediction now! Check back
-        in at the end of the seaon and see how you did. Privacy policy This
-        website does not save any information and stores your prediction in your
-        browser. If you clear your local storage you will lose all your
-        estimates!
-      </p>
       <a
         className="flex items-center gap-1 hover:underline hover:underline-offset-4"
         href="https://www.reddit.com/r/nba//"
@@ -85,6 +77,14 @@ export default async function Home() {
         <h1 className="text-3xl font-bold">Guess the 2025 NBA Standings </h1>
         <NBATeamsTable nbaTeams={nbaTeams} />
         <NBASeasonProgressBar totalWins={wins} />
+        {/* <p>
+          Put your NBA knowledge to the test. Instead of arguing online how X
+          team is overrated or underated, make your season prediction now! Check
+          back in at the end of the seaon and see how you did. Privacy policy
+          This website does not save any information and stores your prediction
+          in your browser. If you clear your local storage you will lose all
+          your estimates!
+        </p> */}
       </main>
       <Footer />
     </div>
