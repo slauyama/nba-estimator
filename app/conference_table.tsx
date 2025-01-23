@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { NBATeam, TeamWinsMap } from "./types/nba";
+import {
+  BasketballReferenceTeamShortCode,
+  NBATeam,
+  TeamWinsMap,
+} from "./types/nba";
 import { SortIcon } from "./svg_icon";
 import { SortDirection, SortType } from "./types/sort";
 import { NBATeamTableRow } from "./nba_table_row";
@@ -12,11 +16,14 @@ const { Name, CurrentRecord, EstimatedRecord } = SortType;
 export function ConferenceTable({
   nbaTeams,
   estimatedWins,
-  setEstimatedWins,
+  setEstimatedWinForTeam,
 }: {
   nbaTeams: NBATeam[];
   estimatedWins: TeamWinsMap;
-  setEstimatedWins: (estimatedWins: TeamWinsMap) => void;
+  setEstimatedWinForTeam: (
+    teamShortcode: BasketballReferenceTeamShortCode,
+    wins: number
+  ) => void;
 }) {
   const [sortType, setSortType] = useState<SortType>(CurrentRecord);
   const [sortDirection, setSortDirection] = useState<SortDirection>(Desc);
@@ -96,12 +103,7 @@ export function ConferenceTable({
               estimatedWins={
                 estimatedWins[nbaTeam.basketball_reference_team_shortcode]
               }
-              setEstimatedWins={(estimatedWin) => {
-                setEstimatedWins({
-                  ...estimatedWins,
-                  [nbaTeam.basketball_reference_team_shortcode]: estimatedWin,
-                });
-              }}
+              setEstimatedWinForTeam={setEstimatedWinForTeam}
             />
           ))}
         </tbody>

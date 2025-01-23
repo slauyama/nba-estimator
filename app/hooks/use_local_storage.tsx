@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 
 export function useLocalStorage<T>(
   key: string,
-  initalValue: T
-): [T, (value: T) => void, () => void] {
-  const [item, setItemState] = useState<T>(initalValue);
+  initialValue?: T
+): [T | undefined, (value: T) => void, () => void] {
+  const [item, setItemState] = useState<T>();
 
   useEffect(() => {
+    if (initialValue) {
+      setItemState(initialValue);
+    }
+
     const rawData = window.localStorage.getItem(key);
 
     if (rawData !== null) {

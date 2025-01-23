@@ -43,18 +43,18 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ## To Do
 
-- Save number of current wins to localStorage
-- Add save button
-  - Save should be the only way to update local storate
-  - Save button should open dialog to warning user what will happen
+- Save button should open dialog to warning user what will happen
+- Add renderable scoring system
 - Host
+- Add Reset button
 - Capture storage event changes to avoid changing data
 - Reddit Oauth
 - Saveable results to DB
 - Need to run a cron job to get updated data daily
 - Need to host DB online
-- Add renderable scoring system
-- Export import system
+- Export import information
+- Create screenshot to send to IMGUR
+- Create post that syncs to reddit reddit post.
 - Tests?
 
 ### Long Tail
@@ -69,3 +69,6 @@ After we will need access to a node server that can also talk to some hosted DB.
 - Add save date to localStorage
 - Need to determine validation for season estimate
   - Based on number of games in East in West we dont want estimates that have only the East winning games
+- Save number of current wins to localStorage
+- Add save button
+- Save should be the only way to update local storage

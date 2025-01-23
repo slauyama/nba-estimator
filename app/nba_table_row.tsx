@@ -1,6 +1,6 @@
 "use client";
 
-import { NBATeam } from "./types/nba";
+import { BasketballReferenceTeamShortCode, NBATeam } from "./types/nba";
 import { GAMES_IN_SEASON } from "./constants";
 import { SVGIcon } from "./svg_icon";
 
@@ -11,12 +11,15 @@ function cleanNumber(number: number) {
 interface NBATeamTableRowProps {
   team: NBATeam;
   estimatedWins: number;
-  setEstimatedWins: (wins: number) => void;
+  setEstimatedWinForTeam: (
+    teamShortcode: BasketballReferenceTeamShortCode,
+    wins: number
+  ) => void;
 }
 export function NBATeamTableRow({
   team,
   estimatedWins,
-  setEstimatedWins,
+  setEstimatedWinForTeam,
 }: NBATeamTableRowProps) {
   return (
     <tr className="text-sm border-b border-gray-800 bg-gray-900 hover:bg-gray-800 last-of-type:border-none">
@@ -47,11 +50,12 @@ export function NBATeamTableRow({
           className="rounded max-w-[35px] [appearance:textfield] border-x-0  text-center  text-sm  block bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-900 focus:border-blue-900 out-of-range:text-red-800  out-of-range:bg-red-300"
           placeholder="0"
           value={cleanNumber(estimatedWins)}
-          onChange={(event) => {
-            setEstimatedWins(
-              Math.max(0, Math.min(Number(event.target.value), 82))
-            );
-          }}
+          onChange={(event) =>
+            setEstimatedWinForTeam(
+              team.basketball_reference_team_shortcode,
+              Number(event.target.value)
+            )
+          }
           max={GAMES_IN_SEASON - team.losses}
           min={team.wins}
         />{" "}
