@@ -45,17 +45,18 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 - Add scoring system
 - Fix light mode
-- Responsive Size
-- Host
+- Make app responsive
+- Host site
 - Add Reset button
-- Capture storage event changes to avoid changing data
+- Listen to storage event changes to avoid manipulation
 - Reddit Oauth
-- Saveable results to DB
-- Need to run a cron job to get updated data daily
-- Need to host DB online
-- Export import information
-- Create screenshot to send to IMGUR
-- Create post that syncs to reddit reddit post.
+- Add support to save result to user profile
+- Create cron job to update standings
+  - Use a different source aside from basketballreference
+- Host DB online
+- Export / import standings
+- Upload screenshot using Imgur API
+- Create post using Reddit API
 - Tests?
 
 ### Long Tail
