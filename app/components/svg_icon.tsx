@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
-import { SvgIds } from "./types/svg";
-import { SortDirection } from "./types/sort";
+import { SvgIds } from "../types/svg";
+import { SortDirection } from "../types/sort";
 
 export function SVGIcon({
   id,

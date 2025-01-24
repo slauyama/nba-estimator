@@ -6,7 +6,7 @@ import {
   NBATeam,
   TeamWinsMap,
 } from "./types/nba";
-import { SortIcon } from "./svg_icon";
+import { SortIcon } from "./components/svg_icon";
 import { SortDirection, SortType } from "./types/sort";
 import { NBATeamTableRow } from "./nba_table_row";
 

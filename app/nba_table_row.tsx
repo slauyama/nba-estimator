@@ -2,7 +2,7 @@
 
 import { BasketballReferenceTeamShortCode, NBATeam } from "./types/nba";
 import { GAMES_IN_SEASON } from "./constants";
-import { SVGIcon } from "./svg_icon";
+import { SVGIcon } from "./components/svg_icon";
 
 function cleanNumber(number: number) {
   return number?.toString();
