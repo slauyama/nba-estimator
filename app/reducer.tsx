@@ -135,7 +135,7 @@ export function getValidationMessage(
       return (
         <span>
           NBA standings are saved.{" "}
-          <span className="text-sm">Last Updated: {lastUpdateString} </span>
+          <span className="font-normal">Last Updated: {lastUpdateString} </span>
         </span>
       );
     }
