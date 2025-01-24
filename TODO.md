@@ -43,8 +43,9 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ## To Do
 
-- Save button should open dialog to warning user what will happen
-- Add renderable scoring system
+- Add scoring system
+- Fix light mode
+- Responsive Size
 - Host
 - Add Reset button
 - Capture storage event changes to avoid changing data
@@ -72,3 +73,4 @@ After we will need access to a node server that can also talk to some hosted DB.
 - Save number of current wins to localStorage
 - Add save button
 - Save should be the only way to update local storage
+- Save button should open confirmation dialog

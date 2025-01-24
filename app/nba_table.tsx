@@ -1,45 +1,41 @@
 "use client";
 
-import { Conference, NBATeam, TeamWinsMap } from "./types/nba";
-import {
-  MAX_CONFERENCE_WINS,
-  MIN_CONFERENCE_WINS,
-  TOTAL_GAMES,
-} from "./constants";
+import { Conference, NBATeam } from "./types/nba";
 import { useLocalStorage } from "./hooks/use_local_storage";
-import { pluralize } from "./helper/pluralize";
-import { SortDirection, SortType } from "./types/sort";
 import { ConferenceTable } from "./conference_table";
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import {
   getCurrentWinsMap,
   getValidationMessage,
   reducer,
   State,
 } from "./reducer";
-
-const { Asc, Desc } = SortDirection;
-const { Name, CurrentRecord, EstimatedRecord } = SortType;
+import { Dialog, useDialogControl } from "./components/dialog";
+import { Button } from "./components/button";
 
 export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
   const [localStorage, setLocalStorage] = useLocalStorage<State>("store");
+  const { isOpen, open, close } = useDialogControl();
 
-  const [state, dispatch] = useReducer(reducer, null, () => {
-    if (localStorage !== undefined) {
-      return {
-        estimatedWins: localStorage.estimatedWins,
-        lastUpdate: localStorage?.lastUpdate ?? {},
-      };
-    }
-
-    return {
-      estimatedWins: getCurrentWinsMap(nbaTeams),
-      lastUpdate: {},
-    };
+  const [state, dispatch] = useReducer(reducer, {
+    estimatedWins: getCurrentWinsMap(nbaTeams),
+    lastUpdate: {},
   });
+
+  useEffect(() => {
+    if (localStorage !== undefined) {
+      dispatch({
+        type: "LOAD_FROM_LOCAL_STORAGE",
+        state: {
+          estimatedWins: localStorage.estimatedWins,
+          lastUpdate: localStorage?.lastUpdate ?? {},
+        },
+      });
+    }
+  }, [localStorage]);
   const { estimatedWins } = state;
 
-  function handleClickSave() {
+  function saveToLocalStorage() {
     const totalCurrentWins = nbaTeams.reduce(
       (acc, nbaTeam) => acc + nbaTeam.wins,
       0
@@ -50,6 +46,13 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
       currentWins: totalCurrentWins,
       saveToLocalStorage: setLocalStorage,
     });
+  }
+
+  function handleClickSave() {
+    if (localStorage !== undefined) {
+      return open();
+    }
+    saveToLocalStorage();
   }
   if (Object.keys(estimatedWins).length === 0) {
     return null;
@@ -87,19 +90,44 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
       </div>
 
       <section className="mt-4 flex gap-4">
-        <button
-          type="button"
-          className="inline-flex rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-slate-500 "
-          disabled={!!getValidationMessage(state, nbaTeams)}
+        <Button
+          disabled={
+            !!getValidationMessage(state, nbaTeams, localStorage?.estimatedWins)
+          }
           onClick={handleClickSave}
+          variant="primary"
         >
           Save
-        </button>
-
+        </Button>
         <p className="self-center font-semibold">
-          {getValidationMessage(state, nbaTeams)}
+          {getValidationMessage(state, nbaTeams, localStorage?.estimatedWins)}
         </p>
       </section>
+      <Dialog isOpen={isOpen} onClose={close}>
+        <>
+          <div className="bg-gray-800/90 p-6">
+            <h3 className="text-lg font-bold text-white" id="modal-title">
+              Update Standings
+            </h3>
+            <p className="mt-2 text-sm">
+              Are you sure you want to update your standings? Updating will
+              lower your max score and this action cannot be undone.
+            </p>
+          </div>
+          <div className="bg-gray-800 p-4 flex gap-3 flex-row-reverse">
+            <Button
+              variant="primary"
+              onClick={() => {
+                saveToLocalStorage();
+                close();
+              }}
+            >
+              Confirm
+            </Button>
+            <Button onClick={close}>Cancel</Button>
+          </div>
+        </>
+      </Dialog>
     </div>
   );
 }

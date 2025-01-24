@@ -27,7 +27,7 @@ function NBASeasonProgressBar({ totalWins }: { totalWins: number }) {
 
 function Footer() {
   return (
-    <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+    <footer className="flex gap-6 items-center justify-center">
       <a
         className="flex items-center gap-1 hover:underline hover:underline-offset-4"
         href="https://www.reddit.com/r/nba//"
@@ -72,8 +72,8 @@ export default async function Home() {
 
   return (
     <div className="grid items-center justify-items-center min-h-screen p-6 pb-20 gap-16 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-6 items-center sm:items-start">
-        <h1 className="text-3xl font-bold">Guess the 2025 NBA Standings </h1>
+      <main className="flex flex-col gap-6 items-start">
+        <h1 className="text-3xl font-bold">Guess the 2025 NBA Standings</h1>
         <NBATeamsTable nbaTeams={nbaTeams} />
         <NBASeasonProgressBar totalWins={wins} />
         {/* <p>
