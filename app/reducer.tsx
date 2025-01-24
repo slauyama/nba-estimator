@@ -22,6 +22,10 @@ export interface State {
 
 type ReducerActions =
   | {
+      type: "LOAD_FROM_LOCAL_STORAGE";
+      state: State;
+    }
+  | {
       type: "RESET_ESTIMATED_WINS";
       currentWinsMap: TeamWinsMap;
     }
@@ -63,7 +67,12 @@ export function reducer(state: State, action: ReducerActions): State {
         },
       };
     }
-    // Use
+    case "LOAD_FROM_LOCAL_STORAGE": {
+      return {
+        ...state,
+        ...action.state,
+      };
+    }
     case "RESET_ESTIMATED_WINS": {
       // Should this action reset lastUpdate
       // Should this action reset remove local storage data?
@@ -102,7 +111,8 @@ export function getCurrentWinsMap(nbaTeams: NBATeam[]): TeamWinsMap {
 
 export function getValidationMessage(
   { estimatedWins, lastUpdate }: State,
-  nbaTeams: NBATeam[]
+  nbaTeams: NBATeam[],
+  localStorageEstimatedWins?: TeamWinsMap
 ) {
   const totalEstimateWins = getTotalEstimatesWins(estimatedWins);
   const easternEstimatedWins = getConferenceEstimatedWins(
@@ -117,16 +127,20 @@ export function getValidationMessage(
   );
 
   if (
-    JSON.stringify(estimatedWins) ===
-    JSON.stringify(getCurrentWinsMap(nbaTeams))
+    JSON.stringify(estimatedWins) === JSON.stringify(localStorageEstimatedWins)
   ) {
-    if (lastUpdate.date === undefined) {
-      return "Error";
+    if (lastUpdate?.date) {
+      const lastUpdateDate = new Date(lastUpdate.date);
+      const lastUpdateString = `${lastUpdateDate.toLocaleDateString()} ${lastUpdateDate.toLocaleTimeString()}`;
+      return (
+        <span>
+          NBA standings are saved.{" "}
+          <span className="text-sm">Last Updated: {lastUpdateString} </span>
+        </span>
+      );
     }
 
-    const lastUpdateDate = new Date(lastUpdate.date);
-    const lastUpdateString = `${lastUpdateDate.toLocaleDateString()} ${lastUpdateDate.toLocaleTimeString()}`;
-    return `NBA standings are saved. Last Updated: ${lastUpdateString}`;
+    return "Error";
   } else if (totalEstimateWins !== TOTAL_GAMES) {
     const totalGamesDifference = Math.abs(TOTAL_GAMES - totalEstimateWins);
 
