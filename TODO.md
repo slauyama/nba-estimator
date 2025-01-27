@@ -49,15 +49,18 @@ After we will need access to a node server that can also talk to some hosted DB.
 - Host site
 - Add Reset button
 - Listen to storage event changes to avoid manipulation
-- Reddit Oauth
-- Add support to save result to user profile
 - Create cron job to update standings
   - Use a different source aside from basketballreference
 - Host DB online
 - Export / import standings
 - Upload screenshot using Imgur API
-- Create post using Reddit API
 - Tests?
+
+### Oauth (User login)
+
+- Reddit Oauth
+- Add support to save result to user profile
+- Create post using Reddit API
 
 ### Long Tail
 
