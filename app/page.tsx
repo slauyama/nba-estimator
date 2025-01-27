@@ -1,5 +1,5 @@
 import Image from "next/image";
-import connectionPool from "./db";
+import { connectionPool } from "./db";
 import { NBATeamsTable } from "./nba_table";
 import { NBATeam } from "./types/nba";
 import { TOTAL_GAMES } from "./constants";
