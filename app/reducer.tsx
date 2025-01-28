@@ -131,13 +131,14 @@ export function getValidationMessage(
   ) {
     if (lastUpdate?.date) {
       const lastUpdateDate = new Date(lastUpdate.date);
-      const lastUpdateString = `${lastUpdateDate.toLocaleDateString()} ${lastUpdateDate.toLocaleTimeString()}`;
-      return (
-        <span>
-          NBA standings are saved.{" "}
-          <span className="font-normal">Last Updated: {lastUpdateString} </span>
-        </span>
-      );
+      const timeFromLastUpdate =
+        (Date.now() - lastUpdateDate.getTime()) / 24 / 60 / 60 / 1000;
+      const lastUpdateString =
+        timeFromLastUpdate > 1
+          ? lastUpdateDate.toLocaleDateString()
+          : `${lastUpdateDate.toLocaleDateString()} ${lastUpdateDate.toLocaleTimeString()}`;
+
+      return <span>Standings were last updated on {lastUpdateString}</span>;
     }
 
     return "Error";

@@ -2,28 +2,6 @@ import Image from "next/image";
 import { connectionPool } from "./db";
 import { NBATeamsTable } from "./nba_table";
 import { NBATeam } from "./types/nba";
-import { TOTAL_GAMES } from "./constants";
-
-function NBASeasonProgressBar({ totalWins }: { totalWins: number }) {
-  const percentageComplete = (totalWins / TOTAL_GAMES) * 100;
-  return (
-    <div className="w-full">
-      <p className="text-sm pb-2">
-        {percentageComplete === 100
-          ? "Season Complete!"
-          : `The season is ${percentageComplete.toPrecision(
-              2
-            )}% complete.`}{" "}
-      </p>
-      <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-900">
-        <div
-          className="bg-gray-700 rounded-full text-xs font-medium h-2"
-          style={{ width: `${percentageComplete}%` }}
-        />
-      </div>
-    </div>
-  );
-}
 
 function Footer() {
   return (
@@ -68,14 +46,12 @@ export default async function Home() {
     ORDER BY wins DESC;`;
   const response = await connectionPool.query(selectNBATeams);
   const nbaTeams: NBATeam[] = response.rows;
-  const wins = nbaTeams.reduce((acc, team) => acc + team.wins, 0);
 
   return (
     <div className="grid items-center justify-items-center min-h-screen p-6 pb-20 gap-16 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-6 items-start">
         <h1 className="text-3xl font-bold">Guess the 2025 NBA Standings</h1>
         <NBATeamsTable nbaTeams={nbaTeams} />
-        <NBASeasonProgressBar totalWins={wins} />
         {/* <p>
           Put your NBA knowledge to the test. Instead of arguing online how X
           team is overrated or underated, make your season prediction now! Check
