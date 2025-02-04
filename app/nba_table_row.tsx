@@ -47,7 +47,7 @@ export function NBATeamTableRow({
       <td className="p-1 sm:px-4 sm:py-2 flex gap-2 justify-center">
         <input
           type="number"
-          className="rounded max-w-[35px] text-xs sm:text-sm [appearance:textfield] border-x-0 text-center block bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-900 focus:border-blue-900 out-of-range:text-red-800  out-of-range:bg-red-300"
+          className="rounded max-w-[35px] text-xs sm:text-sm [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [appearance:textfield]  border-x-0 text-center block bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-900 focus:border-blue-900 out-of-range:text-red-800  out-of-range:bg-red-300"
           placeholder="0"
           value={cleanNumber(estimatedWins)}
           onChange={(event) =>
