@@ -22,10 +22,10 @@ export function NBATeamTableRow({
   setEstimatedWinForTeam,
 }: NBATeamTableRowProps) {
   return (
-    <tr className="text-sm border-b border-gray-800 bg-gray-900 hover:bg-gray-800 last-of-type:border-none">
+    <tr className="text-xs sm:text-sm border-b border-gray-800 bg-gray-900 hover:bg-gray-800 last-of-type:border-none">
       <th
         scope="row"
-        className="px-4 py-2 font-normal whitespace-nowrap text-white"
+        className="p-1 sm:px-4 sm:py-2 font- font-normal whitespace-nowrap text-white"
       >
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
@@ -41,13 +41,13 @@ export function NBATeamTableRow({
           {team.name}
         </a>
       </th>
-      <td className="px-4 py-2 text-center">
+      <td className="p-1 sm:px-4 sm:py-2 text-center">
         {team.wins} - {team.losses}
       </td>
-      <td className="px-4 py-2 flex gap-2 justify-center">
+      <td className="p-1 sm:px-4 sm:py-2 flex gap-2 justify-center">
         <input
           type="number"
-          className="rounded max-w-[35px] [appearance:textfield] border-x-0  text-center  text-sm  block bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-900 focus:border-blue-900 out-of-range:text-red-800  out-of-range:bg-red-300"
+          className="rounded max-w-[35px] text-xs sm:text-sm [appearance:textfield] border-x-0 text-center block bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-900 focus:border-blue-900 out-of-range:text-red-800  out-of-range:bg-red-300"
           placeholder="0"
           value={cleanNumber(estimatedWins)}
           onChange={(event) =>

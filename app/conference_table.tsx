@@ -56,16 +56,18 @@ export function ConferenceTable({
   }
 
   return (
-    <div className="relative overflow-auto rounded-lg">
-      <table>
-        <thead className="text-xs bg-gray-800 text-gray-200">
+    <div className="relative overflow-hidden rounded-md">
+      <table className="w-full">
+        <thead className="text-xs sm:text-sm bg-gray-800 text-gray-200">
           <tr>
             <th
               scope="col"
-              className="px-6 py-2 hover:bg-gray-700"
+              className="cursor-pointer p-1 sm:px-6 sm:py-2 hover:bg-gray-700"
               onClick={() => handleClickTableHeader(Name)}
             >
-              <p className="inline-block">Team</p>
+              <p className="inline-block" title="Team Name">
+                Team
+              </p>
               <SortIcon
                 sortDirection={sortDirection}
                 renderCondition={sortType === Name}
@@ -73,10 +75,12 @@ export function ConferenceTable({
             </th>
             <th
               scope="col"
-              className="px-6 py-2 hover:bg-gray-700"
+              className="cursor-pointer p-1 sm:px-6 sm:py-2 hover:bg-gray-700"
               onClick={() => handleClickTableHeader(CurrentRecord)}
             >
-              <p className="inline-block">Current Record</p>
+              <p className="inline-block" title="Current Record">
+                Current
+              </p>
               <SortIcon
                 sortDirection={sortDirection}
                 renderCondition={sortType === CurrentRecord}
@@ -84,10 +88,12 @@ export function ConferenceTable({
             </th>
             <th
               scope="col"
-              className="px-6 py-2 hover:bg-gray-700"
+              className="cursor-pointer p-1 sm:px-6 sm:py-2 hover:bg-gray-700"
               onClick={() => handleClickTableHeader(EstimatedRecord)}
             >
-              <p className="inline-block">Estimated Record</p>
+              <p className="inline-block" title="Estimated Record">
+                Estimate
+              </p>
               <SortIcon
                 sortDirection={sortDirection}
                 renderCondition={sortType === EstimatedRecord}

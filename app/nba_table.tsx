@@ -41,13 +41,19 @@ function ScoringSection({
     <section className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <div className="flex gap-4">
-          <div className="flex gap-2" onClick={open}>
-            <div className="h-5 w-5 rounded-sm bg-gray-500" />
-            <p className="text-sm">Current Score: {currentScore}</p>
+          <div
+            className="flex gap-2 cursor-pointer hover:underline"
+            onClick={open}
+          >
+            <div className="h-4 w-4 sm:h-5 sm:w-5 rounded-sm bg-gray-500" />
+            <p className="text-xs sm:text-sm">Current Score: {currentScore}</p>
           </div>
-          <div className="flex gap-2" onClick={open}>
-            <div className="h-5 w-5 rounded-sm bg-gray-700" />
-            <p className="text-sm">Your Max Score: {maxScore}</p>
+          <div
+            className="flex gap-2 cursor-pointer hover:underline"
+            onClick={open}
+          >
+            <div className="h-4 w-4 sm:h-5 sm:w-5 rounded-sm bg-gray-700" />
+            <p className="text-xs sm:text-sm">Your Max Score: {maxScore}</p>
           </div>
         </div>
         <div className="w-full rounded-full h-2 bg-[repeating-linear-gradient(45deg,#374151_0px,#374151_7px,#111827_7px,#111827_14px)]">
@@ -63,7 +69,7 @@ function ScoringSection({
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <p className="text-sm">
+        <p className="text-xs sm:text-sm">
           {percentageComplete === 100
             ? "Season Complete!"
             : `The season is ${percentageComplete.toPrecision(
@@ -152,7 +158,7 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex gap-2">
+      <div className="flex flex-col lg:flex-row gap-2">
         <ConferenceTable
           nbaTeams={nbaTeams.filter(
             (nbaTeam) => nbaTeam.conference === Conference.Eastern
@@ -190,7 +196,7 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
         >
           Save
         </Button>
-        <p className="self-center font-semibold">
+        <p className="text-sm sm:text-base self-center font-normal sm:font-semibold">
           {getValidationMessage(state, nbaTeams, localStorage?.estimatedWins)}
         </p>
         <Dialog isOpen={isOpen} onClose={close}>

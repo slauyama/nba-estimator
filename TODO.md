@@ -45,7 +45,6 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 - Add scoring system
 - Fix light mode
-- Make app responsive
 - Host site
 - Add Reset button
 - Listen to storage event changes to avoid manipulation
@@ -68,6 +67,7 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ### Done
 
+- Make app responsive
 - Create Image Sprite for speed optimization
 - Fix svg sprites
 - Add validation on input to render outline of Validity State
