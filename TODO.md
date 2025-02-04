@@ -43,7 +43,6 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ## To Do
 
-- Fix light mode
 - Host site
 - Add Reset button
 - Listen to storage event changes to avoid manipulation
@@ -66,6 +65,7 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ### Done
 
+- Remove light mode
 - Add scoring system
 - Make app responsive
 - Create Image Sprite for speed optimization
