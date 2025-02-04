@@ -54,14 +54,6 @@ export default async function Home() {
           Guess the 2025 NBA Standings
         </h1>
         <NBATeamsTable nbaTeams={nbaTeams} />
-        {/* <p>
-          Put your NBA knowledge to the test. Instead of arguing online how X
-          team is overrated or underated, make your season prediction now! Check
-          back in at the end of the seaon and see how you did. Privacy policy
-          This website does not save any information and stores your prediction
-          in your browser. If you clear your local storage you will lose all
-          your estimates!
-        </p> */}
       </main>
       <Footer />
     </div>
