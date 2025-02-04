@@ -43,7 +43,6 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ## To Do
 
-- Add scoring system
 - Fix light mode
 - Host site
 - Add Reset button
@@ -67,6 +66,7 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ### Done
 
+- Add scoring system
 - Make app responsive
 - Create Image Sprite for speed optimization
 - Fix svg sprites
