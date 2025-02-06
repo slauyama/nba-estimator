@@ -45,6 +45,8 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 - Host site
 - Add Reset button
+- Scrape NBA.com site instead of basketball refrence site
+  - https://www.nba.com/stats/teams/traditional
 - Listen to storage event changes to avoid manipulation
 - Create cron job to update standings
   - Use a different source aside from basketballreference
