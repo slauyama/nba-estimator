@@ -35,6 +35,5 @@ jobs:
           npm install eslint@^9
 
       - name: Run ESLint
-        env:
         run: npm run lint
         continue-on-error: true
