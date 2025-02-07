@@ -22,7 +22,7 @@ export function ConferenceTable({
   estimatedWins: TeamWinsMap;
   setEstimatedWinForTeam: (
     teamShortcode: BasketballReferenceTeamShortCode,
-    wins: number
+    wins: number,
   ) => void;
 }) {
   const [sortType, setSortType] = useState<SortType>(CurrentRecord);

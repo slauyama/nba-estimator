@@ -13,7 +13,7 @@ interface NBATeamTableRowProps {
   estimatedWins: number;
   setEstimatedWinForTeam: (
     teamShortcode: BasketballReferenceTeamShortCode,
-    wins: number
+    wins: number,
   ) => void;
 }
 export function NBATeamTableRow({
@@ -53,7 +53,7 @@ export function NBATeamTableRow({
           onChange={(event) =>
             setEstimatedWinForTeam(
               team.basketball_reference_team_shortcode,
-              Number(event.target.value)
+              Number(event.target.value),
             )
           }
           max={GAMES_IN_SEASON - team.losses}

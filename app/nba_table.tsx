@@ -73,7 +73,7 @@ function ScoringSection({
           {percentageComplete === 100
             ? "Season Complete!"
             : `The season is ${percentageComplete.toPrecision(
-                2
+                2,
               )}% complete.`}{" "}
         </p>
         <div className="w-full rounded-full h-2 bg-gray-700">
@@ -136,7 +136,7 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
   function saveToLocalStorage() {
     const totalCurrentWins = nbaTeams.reduce(
       (acc, nbaTeam) => acc + nbaTeam.wins,
-      0
+      0,
     );
 
     dispatch({
@@ -161,7 +161,7 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
       <div className="flex flex-col lg:flex-row gap-2">
         <ConferenceTable
           nbaTeams={nbaTeams.filter(
-            (nbaTeam) => nbaTeam.conference === Conference.Eastern
+            (nbaTeam) => nbaTeam.conference === Conference.Eastern,
           )}
           estimatedWins={estimatedWins}
           setEstimatedWinForTeam={(teamShortcode, wins) =>
@@ -174,7 +174,7 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
         />
         <ConferenceTable
           nbaTeams={nbaTeams.filter(
-            (nbaTeam) => nbaTeam.conference === Conference.Western
+            (nbaTeam) => nbaTeam.conference === Conference.Western,
           )}
           estimatedWins={estimatedWins}
           setEstimatedWinForTeam={(teamShortcode, wins) =>
@@ -232,9 +232,9 @@ export function NBATeamsTable({ nbaTeams }: { nbaTeams: NBATeam[] }) {
             acc +
             Math.min(
               nbaTeam.wins,
-              estimatedWins[nbaTeam.basketball_reference_team_shortcode]
+              estimatedWins[nbaTeam.basketball_reference_team_shortcode],
             ),
-          0
+          0,
         )}
         currentWins={nbaTeams.reduce((acc, team) => acc + team.wins, 0)}
       />

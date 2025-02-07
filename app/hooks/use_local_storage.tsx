@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export function useLocalStorage<T>(
   key: string,
-  initialValue?: T
+  initialValue?: T,
 ): [T | undefined, (value: T) => void, () => void] {
   const [item, setItemState] = useState<T>();
   // Probably a better way to do type checking
@@ -17,7 +17,7 @@ export function useLocalStorage<T>(
       setItemState(value);
       window.localStorage.setItem(key, stringifiedValue);
     },
-    [key, setItemState]
+    [key, setItemState],
   );
 
   useEffect(() => {

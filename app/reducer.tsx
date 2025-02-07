@@ -91,14 +91,14 @@ function getTotalEstimatesWins(estimatedWins: TeamWinsMap) {
 function getConferenceEstimatedWins(
   nbaTeams: NBATeam[],
   estimatedWins: TeamWinsMap,
-  conference: Conference
+  conference: Conference,
 ) {
   return nbaTeams.reduce(
     (acc, nbaTeam) =>
       nbaTeam.conference === conference
         ? acc + estimatedWins[nbaTeam.basketball_reference_team_shortcode]
         : acc,
-    0
+    0,
   );
 }
 
@@ -112,18 +112,18 @@ export function getCurrentWinsMap(nbaTeams: NBATeam[]): TeamWinsMap {
 export function getValidationMessage(
   { estimatedWins, lastUpdate }: State,
   nbaTeams: NBATeam[],
-  localStorageEstimatedWins?: TeamWinsMap
+  localStorageEstimatedWins?: TeamWinsMap,
 ) {
   const totalEstimateWins = getTotalEstimatesWins(estimatedWins);
   const easternEstimatedWins = getConferenceEstimatedWins(
     nbaTeams,
     estimatedWins,
-    Conference.Eastern
+    Conference.Eastern,
   );
   const westernEstimatedWins = getConferenceEstimatedWins(
     nbaTeams,
     estimatedWins,
-    Conference.Western
+    Conference.Western,
   );
 
   if (
@@ -151,22 +151,22 @@ export function getValidationMessage(
   } else if (easternEstimatedWins > MAX_CONFERENCE_WINS) {
     return `Eastern Conference standings are invalid. Remove ${pluralize(
       easternEstimatedWins - MAX_CONFERENCE_WINS,
-      "win"
+      "win",
     )}.`;
   } else if (easternEstimatedWins < MIN_CONFERENCE_WINS) {
     return `Eastern Conference standings are invalid. Add ${pluralize(
       MIN_CONFERENCE_WINS - easternEstimatedWins,
-      "win"
+      "win",
     )}.`;
   } else if (westernEstimatedWins > MAX_CONFERENCE_WINS) {
     return `Western Conference standings are invalid. Remove ${pluralize(
       westernEstimatedWins - MAX_CONFERENCE_WINS,
-      "win"
+      "win",
     )}.`;
   } else if (westernEstimatedWins < MIN_CONFERENCE_WINS) {
     return `Western Conference standings are invalid. Add ${pluralize(
       MIN_CONFERENCE_WINS - westernEstimatedWins,
-      "win"
+      "win",
     )}.`;
   }
 

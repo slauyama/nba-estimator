@@ -28,7 +28,7 @@ svgFiles.forEach((file) => {
 });
 
 const svgSprite = `<svg xmlns="http://www.w3.org/2000/svg"><defs>${symbols.join(
-  ""
+  "",
 )}</defs></svg>`;
 fs.writeFileSync("public/sprite.svg", svgSprite);
 

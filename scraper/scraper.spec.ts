@@ -5,7 +5,7 @@ import insertRecordIntoNBATeams, {
 import createTableNBATeams from "./sql/create_table_nba_teams";
 
 async function parseNameWinsLossesFromRow(
-  tr: ElementHandle<SVGElement | HTMLElement>
+  tr: ElementHandle<SVGElement | HTMLElement>,
 ): Promise<TeamRecord> {
   const [nameElementHandle, winsElementHandle, lossesElementHandle] =
     await Promise.all([
@@ -29,7 +29,7 @@ test("visit bball reference", async ({ page, browser }) => {
   await createTableNBATeams();
 
   await page.goto(
-    "https://www.basketball-reference.com/leagues/NBA_2025_standings.html"
+    "https://www.basketball-reference.com/leagues/NBA_2025_standings.html",
   );
 
   await Promise.all([

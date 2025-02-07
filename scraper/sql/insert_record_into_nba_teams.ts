@@ -11,7 +11,7 @@ function convertDataToSQLValues(data: TeamRecord) {
 }
 
 export default async function insertRecordIntoNBATeams(
-  parsedRows: TeamRecord[]
+  parsedRows: TeamRecord[],
 ) {
   const insertRecordsSqlString = `INSERT INTO nba_teams (name, wins, losses, updated_at)
   VALUES ${parsedRows.map(convertDataToSQLValues)}
