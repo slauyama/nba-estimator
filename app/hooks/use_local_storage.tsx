@@ -1,10 +1,24 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useLocalStorage<T>(
   key: string,
   initialValue?: T
 ): [T | undefined, (value: T) => void, () => void] {
   const [item, setItemState] = useState<T>();
+  // Probably a better way to do type checking
+  function isString(value: unknown): value is string {
+    return typeof value === "string";
+  }
+
+  const setItem = useCallback(
+    (value: T) => {
+      const stringifiedValue = isString(value) ? value : JSON.stringify(value);
+
+      setItemState(value);
+      window.localStorage.setItem(key, stringifiedValue);
+    },
+    [key, setItemState]
+  );
 
   useEffect(() => {
     if (initialValue) {
@@ -21,19 +35,7 @@ export function useLocalStorage<T>(
         setItem(rawData as T);
       }
     }
-  }, []);
-
-  // Probably a better way to do type checking
-  function isString(value: unknown): value is string {
-    return typeof value === "string";
-  }
-
-  function setItem(value: T) {
-    const stringifiedValue = isString(value) ? value : JSON.stringify(value);
-
-    setItemState(value);
-    window.localStorage.setItem(key, stringifiedValue);
-  }
+  }, [initialValue, key, setItem]);
 
   function removeItem() {
     window.localStorage.removeItem(key);
