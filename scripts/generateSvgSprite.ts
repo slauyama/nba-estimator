@@ -16,9 +16,9 @@ svgFiles.forEach((file) => {
   const fileName = path.basename(file, ".svg");
   ids.push(fileName);
 
-  svgElement?.childNodes.forEach((child) => symbolElement.appendChild(child));
+  svgElement?.childNodes.forEach((child) => symbolElement?.appendChild(child));
 
-  symbolElement?.setAttribute("id2", fileName);
+  symbolElement?.setAttribute("id", fileName);
 
   if (svgElement?.attributes.viewBox) {
     symbolElement?.setAttribute("viewBox", svgElement?.attributes.viewBox);
