@@ -1,13 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# ESLint is a tool for identifying and reporting on patterns
-# found in ECMAScript/JavaScript code.
-# More details at https://github.com/eslint/eslint
-# and https://eslint.org
-
-name: ESLint
+name: Lint
 
 on:
   push:
@@ -30,10 +21,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install ESLint
-        run: |
-          npm install eslint@^9
+      - name: Install Dependencies
+        run: npm install eslint@^9 typescript@^5
 
       - name: Run ESLint
         run: npm run lint
+        continue-on-error: true
+
+      - name: Run TSC
+        run: npx tsc
         continue-on-error: true
