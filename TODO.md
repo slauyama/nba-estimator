@@ -45,8 +45,6 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 - Put into docker
 - Run against github actions
-- Use prettier
-  - Add tailwind prettier
 - Host site
 - Add Reset button
 - Scrape NBA.com site instead of basketball refrence site
@@ -71,6 +69,8 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ### Done
 
+- Use prettier
+  - Add tailwind prettier
 - Create git pre-push hooks
 - Remove light mode
 - Add scoring system
