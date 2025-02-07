@@ -17,14 +17,14 @@ export function useLocalStorage<T>(
       try {
         const parsedData = JSON.parse(rawData) as T;
         setItem(parsedData);
-      } catch (error) {
+      } catch {
         setItem(rawData as T);
       }
     }
   }, []);
 
   // Probably a better way to do type checking
-  function isString(value: any): value is string {
+  function isString(value: unknown): value is string {
     return typeof value === "string";
   }
 

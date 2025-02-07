@@ -1,7 +1,9 @@
-const { Pool } = require("pg");
-require("dotenv").config();
+import pg from "pg";
+import { config } from "dotenv";
 
-export const connectionPool = new Pool({
+config();
+
+export const connectionPool = new pg.Pool({
   connectionString: process.env.POSTGRES_URL,
   user: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,
