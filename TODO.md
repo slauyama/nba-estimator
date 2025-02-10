@@ -44,8 +44,9 @@ After we will need access to a node server that can also talk to some hosted DB.
 ## To Do
 
 - Put into docker
-- Run against github actions
 - Host site
+- Green Blue Deploy
+  - https://prototypr.io/post/nextjs-selfhost-vercel
 - Add Reset button
 - Scrape NBA.com site instead of basketball refrence site
   - https://www.nba.com/stats/teams/traditional
@@ -69,6 +70,7 @@ After we will need access to a node server that can also talk to some hosted DB.
 
 ### Done
 
+- Run against github actions
 - Use prettier
   - Add tailwind prettier
 - Create git pre-push hooks

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build-svg-sprites": "npx tsx scripts/generateSvgSprite.ts"
+    "build-svg-sprites": "npx tsx scripts/generateSvgSprite.ts",
+    "scrapper": "npx playwright test scraper/scraper.spec.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
