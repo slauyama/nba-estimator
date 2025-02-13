@@ -29,7 +29,7 @@ test("visit bball reference", async ({ page, browser }) => {
   await createTableNBATeams();
 
   await page.goto(
-    "https://www.basketball-reference.com/leagues/NBA_2025_standings.html",
+    `https://www.basketball-reference.com/leagues/NBA_2025_standings.html?${Math.random() * 100000000000000000}`,
   );
 
   await Promise.all([
